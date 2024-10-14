@@ -10,7 +10,6 @@ const Header = (props) => {
 
 const Content = (props) => {
   const allparts = props.parts;
-  console.log(allparts);
 
   return (
     <div>
@@ -25,13 +24,12 @@ const Content = (props) => {
   );
 };
 
-const Footer = (props) => {
+const Total = (props) => {
+  let total = 0;
+  props.parts.forEach((part) => (total += part.exercises));
   return (
     <>
-      <p>
-        Number of exercises{' '}
-        {props.exercises1 + props.exercises2 + props.exercises3}
-      </p>
+      <p>Number of exercises {total}</p>
     </>
   );
 };
@@ -57,12 +55,7 @@ const App = () => {
     <>
       <Header text={course} />
       <Content parts={parts} />
-      {/* <Total parts={parts} /> */}
-      <Footer
-        exercises1={parts[0].exercises}
-        exercises2={parts[1].exercises}
-        exercises3={parts[2].exercises}
-      />
+      <Total parts={parts} />
     </>
   );
 };
