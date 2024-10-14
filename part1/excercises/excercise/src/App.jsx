@@ -1,27 +1,26 @@
+import { createElement } from 'react';
+
 const Header = (props) => {
   return (
-    <>
+    <div>
       <h1>{props.text}</h1>
-    </>
-  );
-};
-
-const Part = (props) => {
-  return (
-    <>
-      <p>
-        {props.part.name} {props.part.exercises}
-      </p>
-    </>
+    </div>
   );
 };
 
 const Content = (props) => {
+  const allparts = props.parts;
+  console.log(allparts);
+
   return (
     <div>
-      <Part part={props.part1} />
-      <Part part={props.part2} />
-      <Part part={props.part3} />
+      {allparts.map((part, key) => {
+        return (
+          <p key={key}>
+            {part.name} {part.exercises}
+          </p>
+        );
+      })}
     </div>
   );
 };
@@ -55,15 +54,16 @@ const App = () => {
   ];
 
   return (
-    <div>
+    <>
       <Header text={course} />
-      <Content part1={parts[0]} part2={parts[1]} part3={parts[2]} />
+      <Content parts={parts} />
+      {/* <Total parts={parts} /> */}
       <Footer
         exercises1={parts[0].exercises}
         exercises2={parts[1].exercises}
         exercises3={parts[2].exercises}
       />
-    </div>
+    </>
   );
 };
 
