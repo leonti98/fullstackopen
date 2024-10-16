@@ -7,6 +7,12 @@ const History = (props) => {
   return <div>button pressed history: {props.allClicks.join(' ')}</div>;
 };
 
+const Button = (props) => {
+  console.log('props value is ', props);
+  const { handleClick, text } = props;
+  return <button onClick={handleClick}>{text}</button>;
+};
+
 const App = () => {
   const [left, setLeft] = useState(0);
   const [right, setRight] = useState(0);
@@ -23,12 +29,16 @@ const App = () => {
     const updatedRight = right + 1;
     setRight(updatedRight);
   };
-
+  debugger;
   return (
     <div>
       {left}
-      <button onClick={handleLeftClick}>left</button>
-      <button onClick={handleRightClick}>right</button>
+      <Button handleClick={handleLeftClick} text="left">
+        left
+      </Button>
+      <Button handleClick={handleRightClick} text="right">
+        right
+      </Button>
       {right}
       <History allClicks={allClicks} />
     </div>
