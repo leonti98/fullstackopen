@@ -5,6 +5,8 @@ const App = () => {
 
   setTimeout(() => setCounter(counter + 1), 1000);
 
+  console.log('rendering...', counter);
+
   return <div>{counter}</div>;
 };
 
