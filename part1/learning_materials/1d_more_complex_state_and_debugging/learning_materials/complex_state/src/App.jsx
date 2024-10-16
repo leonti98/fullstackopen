@@ -7,15 +7,21 @@ const App = () => {
   const [allClicks, setAll] = useState([]);
 
   const handleLeftClick = () => {
+    console.log(allClicks);
     setAll(allClicks.concat('L'));
+    console.log(allClicks);
     setLeft(left + 1);
   };
 
   const handleRightClick = () => {
+    console.log(allClicks, 'before');
     setAll(allClicks.concat('R'));
+    console.log(allClicks, 'after');
     setRight(right + 1);
   };
-
+  console.log('====================================');
+  console.log(allClicks);
+  console.log('====================================');
   return (
     <div>
       {left}
