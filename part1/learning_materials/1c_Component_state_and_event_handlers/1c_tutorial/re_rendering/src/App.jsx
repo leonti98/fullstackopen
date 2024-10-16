@@ -3,11 +3,17 @@ import { useState } from 'react';
 const App = () => {
   const [counter, setCounter] = useState(0);
 
-  setTimeout(() => setCounter(counter + 1), 1000);
+  const handleClick = () => {
+    console.log('clicked');
+  };
 
-  console.log('rendering...', counter);
-
-  return <div>{counter}</div>;
+  return (
+    <div>
+      <div>
+        <button onClick={handleClick}>click</button>
+      </div>
+    </div>
+  );
 };
 
 export default App;
