@@ -1,15 +1,33 @@
 import { useState } from 'react';
 
 const App = () => {
-  const [left, setLeft] = useState(0);
-  const [right, setRight] = useState(0);
+  const [counter, setCounter] = useState({
+    left: 0,
+    right: 0,
+  });
+
+  const handleLeftClick = () => {
+    const clickCounter = {
+      left: counter.left + 1,
+      right: counter.right,
+    };
+    setCounter(clickCounter);
+  };
+
+  const handleRightClick = () => {
+    const clickCounter = {
+      left: counter.left,
+      right: counter.right + 1,
+    };
+    setCounter(clickCounter);
+  };
 
   return (
     <div>
-      {left}
-      <button onClick={() => setLeft(left + 1)}>left</button>
-      <button onClick={() => setRight(right + 1)}>right</button>
-      {right}
+      {counter.left}
+      <button onClick={handleLeftClick}>left</button>
+      <button onClick={handleRightClick}>right</button>
+      {counter.right}
     </div>
   );
 };
