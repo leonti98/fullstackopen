@@ -1,15 +1,6 @@
 import { useState } from 'react';
 
-const History = (props) => {
-  if (props.allClicks.length === 0) {
-    return <div>the app is used by pressing the buttons</div>;
-  }
-  return <div>button pressed history: {props.allClicks.join(' ')}</div>;
-};
-
-const hello = (who) => () => {
-  console.log('hello', who);
-};
+const Display = (props) => <div>{props.value}</div>;
 
 const Button = (props) => (
   <button onClick={props.handleClick}>{props.text}</button>
@@ -25,7 +16,7 @@ const App = () => {
 
   return (
     <div>
-      {value}
+      <Display value={value} />
       <Button handleClick={() => setToValue(1000)} text="thousand" />
       <Button handleClick={() => setToValue(0)} text="reset" />
       <Button handleClick={() => setToValue(value + 1)} text="increment" />
