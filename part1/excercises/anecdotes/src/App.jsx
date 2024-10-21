@@ -2,17 +2,30 @@ import { useState } from 'react';
 
 const Button = (props) => {
   return (
-    <div>
+    <>
       <button onClick={props.clickhandler}>{props.text}</button>
+    </>
+  );
+};
+
+const MostVoted = (props) => {
+  const maxVoteIndex = props.voteCounter.indexOf(
+    Math.max(...props.voteCounter)
+  );
+  console.log(maxVoteIndex);
+
+  const maxVoteAnecdote = props.anecdotes[maxVoteIndex];
+  return (
+    <div>
+      {' '}
+      <h2>Anecdote with most votes</h2>
+      <p>{maxVoteAnecdote}</p>
     </div>
   );
 };
 
 const App = () => {
-  const generateRandom = () => {
-    const newNumber = Math.floor(Math.random() * anecdotes.length);
-    setSelected(newNumber);
-  };
+  const [selected, setSelected] = useState(0);
 
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -25,14 +38,52 @@ const App = () => {
     'The only way to go fast, is to go well.',
   ];
 
-  const [selected, setSelected] = useState(0);
+  const [voteCounter, setVoteCounter] = useState(
+    new Array(anecdotes.length).fill(0)
+  );
+
+  const generateRandom = () => {
+    const newNumber = Math.floor(Math.random() * anecdotes.length);
+    setSelected(newNumber);
+    console.log(voteCounter, newNumber);
+  };
+
+  const addVotes = () => {
+    console.log('====================================');
+    console.log('vote couter before', voteCounter);
+    const copyVoteCounter = [...voteCounter];
+    copyVoteCounter[selected] += 1;
+    console.log('vote couter after', voteCounter);
+    console.log('copy vote couter after', copyVoteCounter);
+    // console.log('vote counter copy', copyVoteCounter);
+    // console.log('{voteCounter[selected]', voteCounter[selected]);
+    setVoteCounter(copyVoteCounter);
+    console.log('vote couter after setting', voteCounter);
+    console.log('====================================');
+    // setCurrentVotes(copyVoteCounter[selected]);
+  };
+
+  // console.log('voteCounter =', voteCounter);
+
   return (
     <div>
-      <div>{anecdotes[selected]}</div>
-      <Button
-        clickhandler={() => generateRandom()}
-        text="next anectote"
-      ></Button>
+      <h1>Anecdote of the day</h1>
+      <div>
+        <p>{anecdotes[selected]}</p>
+        <p>has {voteCounter[selected]} votes</p>
+      </div>
+      <div>
+        <Button
+          clickhandler={() => generateRandom()}
+          text="next anectote"
+        ></Button>
+        <Button clickhandler={() => addVotes()} text="vote">
+          Vote
+        </Button>
+      </div>
+      <div>
+        <MostVoted voteCounter={voteCounter} anecdotes={anecdotes}></MostVoted>
+      </div>
     </div>
   );
 };
