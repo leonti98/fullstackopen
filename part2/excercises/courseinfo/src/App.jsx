@@ -17,6 +17,14 @@ const Content = ({ parts }) => {
   return parts.map((part, i) => <Part key={i} part={part}></Part>);
 };
 
+const Course = ({ course }) => (
+  <div>
+    <Header key={course.id} name={course.name} />
+    <Content parts={course.parts} />
+    <Total parts={course.parts} />
+  </div>
+);
+
 const App = () => {
   const courses = [
     {
@@ -65,15 +73,9 @@ const App = () => {
 
   return (
     <div>
-      {courses.map((course) => {
-        return (
-          <div key={course.id}>
-            <Header key={course.id} name={course.name} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
-          </div>
-        );
-      })}
+      {courses.map((course) => (
+        <Course key={course.id} course={course} />
+      ))}
     </div>
   );
 };
