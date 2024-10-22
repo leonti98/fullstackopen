@@ -1,8 +1,4 @@
-const App = (props) => {
-  const { notes } = props;
-  console.log(notes);
-  const result = notes.map((note) => <li key={note.id}>note.content</li>);
-  console.log(result);
+const App = ({ notes }) => {
   return (
     <div>
       <h1>Notes</h1>
