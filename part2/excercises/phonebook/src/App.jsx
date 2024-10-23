@@ -1,24 +1,41 @@
 import { useState } from 'react';
 
-const Person = ({ name }) => <li>{name}</li>;
+const Person = ({ name }) => <p>{name}</p>;
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
   const [newName, setNewName] = useState('');
+  const [personAlreadyExists, setPersonAlreadyExists] = useState(false);
+
+  const checkIfExists = (newEntry) => {
+    const exists = persons.filter((person) => person.name === newEntry.name);
+    const currentPersonExists = exists.length > 0 ? true : false;
+    setPersonAlreadyExists(currentPersonExists);
+    console.log('currentPersonExists', currentPersonExists);
+    return currentPersonExists;
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
     const newEntry = {
       name: newName,
     };
-    setPersons(persons.concat(newEntry));
-    setNewName('');
+
+    if (checkIfExists(newEntry)) {
+      console.log('exists');
+      return <p>{newName} is already added to phonebook</p>;
+    } else {
+      console.log('does not exists');
+
+      setPersons(persons.concat(newEntry));
+      setNewName('');
+    }
   };
 
   const handleFormChange = (event) => {
-    console.log(event.target.value);
     setNewName(event.target.value);
   };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -31,11 +48,12 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map((parson, i) => (
-          <Person name={parson.name} key={i}></Person>
-        ))}
-      </ul>
+
+      {persons.map((parson, i) => (
+        <Person name={parson.name} key={i}></Person>
+      ))}
+
+      {personAlreadyExists ? <p>duplicate person</p> : ''}
     </div>
   );
 };
