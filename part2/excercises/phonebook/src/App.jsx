@@ -6,6 +6,7 @@ const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
   const [newName, setNewName] = useState('');
   const [personAlreadyExists, setPersonAlreadyExists] = useState(false);
+  const [lastEntry, setLastEntry] = useState('');
 
   const checkIfExists = (newEntry) => {
     const exists = persons.filter((person) => person.name === newEntry.name);
@@ -23,7 +24,7 @@ const App = () => {
 
     if (checkIfExists(newEntry)) {
       console.log('exists');
-      return <p>{newName} is already added to phonebook</p>;
+      setLastEntry(newName);
     } else {
       console.log('does not exists');
 
@@ -53,7 +54,11 @@ const App = () => {
         <Person name={parson.name} key={i}></Person>
       ))}
 
-      {personAlreadyExists ? <p>duplicate person</p> : ''}
+      {personAlreadyExists ? (
+        <p>{lastEntry} is already added to phonebook</p>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
