@@ -1,25 +1,6 @@
 import { useState } from 'react';
-
-const Person = ({ name, phone }) => (
-  <p>
-    {name} {phone}
-  </p>
-);
-
-const Filter = ({ persons, searchField }) => {
-  if (searchField === '') {
-    return '';
-  }
-  const filteredPersons = persons
-    .filter((person) =>
-      person.name.toLowerCase().includes(searchField.toLowerCase())
-    )
-    .map((person, i) => {
-      return <Person name={person.name} phone={person.phone} key={i}></Person>;
-    });
-
-  return <>{filteredPersons}</>;
-};
+import Filter from './components/Filter';
+import Person from './components/Person';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -40,6 +21,9 @@ const App = () => {
     );
     const currentPersonExists = exists.length > 0 ? true : false;
     setPersonAlreadyExists(currentPersonExists);
+    if (currentPersonExists) {
+      alert(`${newEntry.name} is already added to phonebook`);
+    }
     return currentPersonExists;
   };
 
