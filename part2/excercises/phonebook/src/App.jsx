@@ -7,8 +7,6 @@ const Person = ({ name, phone }) => (
 );
 
 const Filter = ({ persons, searchField }) => {
-  console.log(persons);
-  console.log(searchField);
   if (searchField === '') {
     return '';
   }
@@ -17,16 +15,8 @@ const Filter = ({ persons, searchField }) => {
       person.name.toLowerCase().includes(searchField.toLowerCase())
     )
     .map((person, i) => {
-      console.log(person);
-      return (
-        <Person
-          name={person.name}
-          phone={person.phone}
-          key={person.phone.id}
-        ></Person>
-      );
+      return <Person name={person.name} phone={person.phone} key={i}></Person>;
     });
-  console.log(filteredPersons);
 
   return <>{filteredPersons}</>;
 };
@@ -50,7 +40,6 @@ const App = () => {
     );
     const currentPersonExists = exists.length > 0 ? true : false;
     setPersonAlreadyExists(currentPersonExists);
-    console.log('currentPersonExists', currentPersonExists);
     return currentPersonExists;
   };
 
@@ -62,12 +51,10 @@ const App = () => {
     };
 
     if (checkIfExists(newEntry)) {
-      console.log('exists');
       setLastEntry(
         `person ${formData.personName} with phone ${formData.phone}`
       );
     } else {
-      console.log('does not exists');
       setPersons(persons.concat(newEntry));
       setFormData({ personName: '', phone: '' });
       setLastEntry(
