@@ -6,7 +6,7 @@ import axios from "axios";
 const App = () => {
   const [persons, setPersons] = useState([]);
 
-  const hook = (promise) => {
+  const hook = () => {
     axios.get("http://localhost:3001/persons").then((response) => {
       setPersons(response.data);
     });
@@ -59,7 +59,6 @@ const App = () => {
   const searchPerson = (event) => {
     setSearchField(event.target.value);
   };
-  console.log(persons);
 
   return (
     <div>
