@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Note from './components/Note';
+import axios from 'axios';
 
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes);
+const App = () => {
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('a new note...');
   const [showAll, setShowAll] = useState(true);
 
@@ -11,8 +12,11 @@ const App = (props) => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      id: String(notes.length + 1),
     };
+    axios.post('http://localhost:3001/notes', noteObject).then((response) => {
+      // setNotes(response.data);
+      console.log(response);
+    });
     setNotes(notes.concat(noteObject));
     setNewNote('');
   };
