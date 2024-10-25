@@ -1,32 +1,36 @@
-import { useState } from 'react';
-import Note from './components/Note';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Note from './components/Note';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('a new note...');
-  const [showAll, setShowAll] = useState(true);
+  const [newNote, setNewNote] = useState('');
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/notes').then((response) => {
+      setNotes(response.data);
+    });
+  }, []);
 
   const addNote = (event) => {
     event.preventDefault();
     const noteObject = {
       content: newNote,
-      important: Math.random() < 0.5,
+      important: Math.random() > 0.5,
     };
 
     axios.post('http://localhost:3001/notes', noteObject).then((response) => {
-      console.log(response);
+      setNotes(notes.concat(response.data));
+      setNewNote('');
     });
   };
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value);
     setNewNote(event.target.value);
   };
 
-  const notesToShow = showAll
-    ? notes
-    : notes.filter((note) => note.important === true);
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   return (
     <div>
