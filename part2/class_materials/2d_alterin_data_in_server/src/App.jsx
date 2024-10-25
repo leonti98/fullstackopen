@@ -13,12 +13,10 @@ const App = () => {
       content: newNote,
       important: Math.random() < 0.5,
     };
+
     axios.post('http://localhost:3001/notes', noteObject).then((response) => {
-      // setNotes(response.data);
       console.log(response);
     });
-    setNotes(notes.concat(noteObject));
-    setNewNote('');
   };
 
   const handleNoteChange = (event) => {
