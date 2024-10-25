@@ -28,7 +28,7 @@
     {
       "id": "8d35",
       "content": "a new note...2",
-      "important": false
+      "important": true
     }
   ]
 }
