@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import Note from './components/Note';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import Note from "./components/Note";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState('');
+  const [newNote, setNewNote] = useState("");
   const [showAll, setShowAll] = useState(false);
 
   const toggleImportanceOf = (id) => {
@@ -18,7 +18,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:3001/notes').then((response) => {
+    axios.get("http://localhost:3001/notes").then((response) => {
       setNotes(response.data);
     });
   }, []);
@@ -30,9 +30,9 @@ const App = () => {
       important: Math.random() > 0.5,
     };
 
-    axios.post('http://localhost:3001/notes', noteObject).then((response) => {
+    axios.post("http://localhost:3001/notes", noteObject).then((response) => {
       setNotes(notes.concat(response.data));
-      setNewNote('');
+      setNewNote("");
     });
   };
 
@@ -47,7 +47,7 @@ const App = () => {
       <h1>Notes</h1>
       <div>
         <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
+          show {showAll ? "important" : "all"}
         </button>
       </div>
       <ul>
