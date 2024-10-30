@@ -1,35 +1,31 @@
-import { useState, useEffect } from "react";
-import Filter from "./components/Filter";
-import Person from "./components/Person";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import Filter from './components/Filter';
+import Person from './components/Person';
+import phonebookService from './services/phoneBook';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [formData, setFormData] = useState({ personName: '', number: '' });
+  const [addingDuplcate, setAddingDuplcate] = useState(false);
+  const [lastEntry, setLastEntry] = useState('');
+  const [searchField, setSearchField] = useState('');
 
-  const hook = () => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
-  };
+  useEffect(() => {
+    phonebookService.getPeople().then((people) => setPersons(people));
+  }, []);
 
-  useEffect(hook, []);
-
-  const [formData, setFormData] = useState({ personName: "", number: "" });
-  const [personAlreadyExists, setPersonAlreadyExists] = useState(false);
-  const [lastEntry, setLastEntry] = useState("");
-  const [searchField, setSearchField] = useState("");
-
-  const checkIfExists = (newEntry) => {
-    const exists = persons.filter(
+  const checkDuplicate = (newEntry) => {
+    const exists = persons.find(
       (person) =>
         person.name === newEntry.name && person.number === newEntry.number
     );
-    const currentPersonExists = exists.length > 0 ? true : false;
-    setPersonAlreadyExists(currentPersonExists);
-    if (currentPersonExists) {
-      alert(`${newEntry.name} is already added to phonebook`);
+    if (exists === undefined) {
+      setAddingDuplcate(false);
+      return false;
+    } else {
+      setAddingDuplcate(true);
+      return true;
     }
-    return currentPersonExists;
   };
 
   const addPerson = (event) => {
@@ -39,16 +35,17 @@ const App = () => {
       number: formData.number,
     };
 
-    if (checkIfExists(newEntry)) {
+    if (checkDuplicate(newEntry)) {
       setLastEntry(
         `person ${formData.personName} with number ${formData.number}`
       );
     } else {
       setPersons(persons.concat(newEntry));
-      setFormData({ personName: "", number: "" });
+      setFormData({ personName: '', number: '' });
       setLastEntry(
         `person ${formData.personName} with number ${formData.number}`
       );
+      phonebookService.addPerson(newEntry);
     }
   };
 
@@ -59,6 +56,10 @@ const App = () => {
   const searchPerson = (event) => {
     setSearchField(event.target.value);
   };
+  console.log(typeof persons);
+  console.log('==================================');
+  console.log('persons', persons);
+  console.log('==================================');
 
   return (
     <div>
@@ -79,7 +80,7 @@ const App = () => {
       <h2>add a new</h2>
       <form onSubmit={addPerson}>
         <div>
-          name:{" "}
+          name:{' '}
           <input
             name="personName"
             onChange={handleFormChange}
@@ -87,7 +88,7 @@ const App = () => {
           />
         </div>
         <div>
-          number:{" "}
+          number:{' '}
           <input
             name="number"
             onChange={handleFormChange}
@@ -102,13 +103,7 @@ const App = () => {
       {persons.map((parson, i) => (
         <Person name={parson.name} number={parson.number} key={i}></Person>
       ))}
-      {personAlreadyExists ? (
-        <p>{lastEntry} is already added to phonebook</p>
-      ) : (
-        <>
-          <p>{lastEntry} has been added to phonebook</p>
-        </>
-      )}
+      {addingDuplcate ? <p>{lastEntry} is duplicate</p> : <></>}
     </div>
   );
 };
