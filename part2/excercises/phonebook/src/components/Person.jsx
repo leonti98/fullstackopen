@@ -1,7 +1,7 @@
 const Person = ({ name, number, deletePerson }) => (
   <li>
     {name} {number}
-    <button onClick={deletePerson}>delete</button>
+    {deletePerson ? <button onClick={deletePerson}>delete</button> : null}
   </li>
 );
 
