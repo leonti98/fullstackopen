@@ -10,7 +10,10 @@ const App = () => {
   const [addingDuplcate, setAddingDuplcate] = useState(false);
   const [lastEntry, setLastEntry] = useState('');
   const [searchField, setSearchField] = useState('');
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState({
+    message: '',
+    danger: false,
+  });
 
   useEffect(() => {
     phonebookService.getPeople().then((people) => setPersons(people));
@@ -46,21 +49,26 @@ const App = () => {
                 person.id === returnedPerson.id ? returnedPerson : person
               )
             );
-            setNotification(`${formData.personName}'s number has been updated`);
+            setNotification({
+              message: `${formData.personName}'s number has been updated`,
+              danger: false,
+            });
           });
         setLastEntry(`${formData.personName}'s number has been updated`);
       } else {
-        setNotification(
-          `person ${formData.personName} with number ${formData.number} is duplicate`
-        );
+        setNotification({
+          message: `person ${formData.personName} with number ${formData.number} is duplicate`,
+          danger: true,
+        });
       }
     } else {
       phonebookService.addPerson(newEntry).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setFormData({ personName: '', number: '' });
-        setNotification(
-          `person ${formData.personName} with number ${formData.number} added`
-        );
+        setNotification({
+          message: `person ${returnedPerson.name} with number ${returnedPerson.number} has been added`,
+          danger: false,
+        });
       });
     }
   };
@@ -81,14 +89,17 @@ const App = () => {
           setPersons(
             persons.filter((person) => person.id !== deletedPerson.id)
           );
-          setNotification(`${deletedPerson.name} has beed deleted`);
-          console.log('==================================');
-          console.log('deletedPerson', deletedPerson);
-          console.log('==================================');
+          setNotification({
+            message: `${deletedPerson.name} has beed deleted`,
+            danger: false,
+          });
         })
         .catch((error) => {
-          alert(`The person was already removed from the server`);
           setPersons(persons.filter((person) => person.id !== id));
+          setNotification({
+            message: `The person was already removed from the server`,
+            danger: true,
+          });
         });
     }
   };
@@ -96,7 +107,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notification} />
+      <Notification
+        message={notification.message}
+        danger={notification.danger}
+      />
       <form>
         <div>
           filter show with

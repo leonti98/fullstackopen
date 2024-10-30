@@ -1,8 +1,8 @@
-import Person from "./Person";
+import Person from './Person';
 
 const Filter = ({ persons, searchField }) => {
-  if (searchField === "") {
-    return "";
+  if (searchField === '') {
+    return '';
   }
   const filteredPersons = persons
     .filter((person) =>
