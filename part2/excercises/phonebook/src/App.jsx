@@ -40,12 +40,16 @@ const App = () => {
         `person ${formData.personName} with number ${formData.number}`
       );
     } else {
-      setPersons(persons.concat(newEntry));
-      setFormData({ personName: '', number: '' });
-      setLastEntry(
-        `person ${formData.personName} with number ${formData.number}`
-      );
-      phonebookService.addPerson(newEntry);
+      phonebookService.addPerson(newEntry).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        console.log('==================================');
+        console.log('returnedPerson', returnedPerson);
+        console.log('==================================');
+        setFormData({ personName: '', number: '' });
+        setLastEntry(
+          `person ${formData.personName} with number ${formData.number} added`
+        );
+      });
     }
   };
 
@@ -56,10 +60,21 @@ const App = () => {
   const searchPerson = (event) => {
     setSearchField(event.target.value);
   };
-  console.log(typeof persons);
-  console.log('==================================');
-  console.log('persons', persons);
-  console.log('==================================');
+
+  const deletePerson = (id) => {
+    console.log('==================================');
+    console.log('id', id);
+    console.log('==================================');
+    phonebookService
+      .deletePerson(id)
+      .then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      })
+      .catch((error) => {
+        alert(`The person was already removed from the server`);
+        setPersons(persons.filter((person) => person.id !== id));
+      });
+  };
 
   return (
     <div>
@@ -100,9 +115,16 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((parson, i) => (
-        <Person name={parson.name} number={parson.number} key={i}></Person>
-      ))}
+      <ul>
+        {persons.map((person, i) => (
+          <Person
+            name={person.name}
+            number={person.number}
+            deletePerson={() => deletePerson(person.id)}
+            key={i}
+          ></Person>
+        ))}
+      </ul>
       {addingDuplcate ? <p>{lastEntry} is duplicate</p> : <></>}
     </div>
   );
