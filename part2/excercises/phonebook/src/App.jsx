@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import Person from './components/Person';
 import phonebookService from './services/phoneBook';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -9,6 +10,7 @@ const App = () => {
   const [addingDuplcate, setAddingDuplcate] = useState(false);
   const [lastEntry, setLastEntry] = useState('');
   const [searchField, setSearchField] = useState('');
+  const [notification, setNotification] = useState('');
 
   useEffect(() => {
     phonebookService.getPeople().then((people) => setPersons(people));
@@ -44,10 +46,11 @@ const App = () => {
                 person.id === returnedPerson.id ? returnedPerson : person
               )
             );
+            setNotification(`${formData.personName}'s number has been updated`);
           });
         setLastEntry(`${formData.personName}'s number has been updated`);
       } else {
-        setLastEntry(
+        setNotification(
           `person ${formData.personName} with number ${formData.number} is duplicate`
         );
       }
@@ -55,7 +58,7 @@ const App = () => {
       phonebookService.addPerson(newEntry).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setFormData({ personName: '', number: '' });
-        setLastEntry(
+        setNotification(
           `person ${formData.personName} with number ${formData.number} added`
         );
       });
@@ -74,8 +77,14 @@ const App = () => {
     if (window.confirm('Do you really want to delete?')) {
       phonebookService
         .deletePerson(id)
-        .then(() => {
-          setPersons(persons.filter((person) => person.id !== id));
+        .then((deletedPerson) => {
+          setPersons(
+            persons.filter((person) => person.id !== deletedPerson.id)
+          );
+          setNotification(`${deletedPerson.name} has beed deleted`);
+          console.log('==================================');
+          console.log('deletedPerson', deletedPerson);
+          console.log('==================================');
         })
         .catch((error) => {
           alert(`The person was already removed from the server`);
@@ -87,7 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={notification} />
       <form>
         <div>
           filter show with
