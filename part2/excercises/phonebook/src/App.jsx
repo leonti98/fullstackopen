@@ -62,18 +62,17 @@ const App = () => {
   };
 
   const deletePerson = (id) => {
-    console.log('==================================');
-    console.log('id', id);
-    console.log('==================================');
-    phonebookService
-      .deletePerson(id)
-      .then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      })
-      .catch((error) => {
-        alert(`The person was already removed from the server`);
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+    if (window.confirm('Do you really want to delete?')) {
+      phonebookService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          alert(`The person was already removed from the server`);
+          setPersons(persons.filter((person) => person.id !== id));
+        });
+    }
   };
 
   return (
