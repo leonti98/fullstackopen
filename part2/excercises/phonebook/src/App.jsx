@@ -15,16 +15,15 @@ const App = () => {
   }, []);
 
   const checkDuplicate = (newEntry) => {
-    const exists = persons.find(
-      (person) =>
-        person.name === newEntry.name && person.number === newEntry.number
+    const alreadyExists = persons.find(
+      (person) => person.name === newEntry.name
     );
-    if (exists === undefined) {
+    if (alreadyExists === undefined) {
       setAddingDuplcate(false);
       return false;
     } else {
       setAddingDuplcate(true);
-      return true;
+      return alreadyExists;
     }
   };
 
@@ -34,17 +33,27 @@ const App = () => {
       name: formData.personName,
       number: formData.number,
     };
-
-    if (checkDuplicate(newEntry)) {
-      setLastEntry(
-        `person ${formData.personName} with number ${formData.number}`
-      );
+    const checkResult = checkDuplicate(newEntry);
+    if (checkResult) {
+      if (window.confirm(`want to update ${newEntry.name}'s number?`)) {
+        phonebookService
+          .updatePersonNumber(checkResult.id, newEntry)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id === returnedPerson.id ? returnedPerson : person
+              )
+            );
+          });
+        setLastEntry(`${formData.personName}'s number has been updated`);
+      } else {
+        setLastEntry(
+          `person ${formData.personName} with number ${formData.number} is duplicate`
+        );
+      }
     } else {
       phonebookService.addPerson(newEntry).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
-        console.log('==================================');
-        console.log('returnedPerson', returnedPerson);
-        console.log('==================================');
         setFormData({ personName: '', number: '' });
         setLastEntry(
           `person ${formData.personName} with number ${formData.number} added`
@@ -124,7 +133,7 @@ const App = () => {
           ></Person>
         ))}
       </ul>
-      {addingDuplcate ? <p>{lastEntry} is duplicate</p> : <></>}
+      {addingDuplcate ? <p>{lastEntry}</p> : <></>}
     </div>
   );
 };
