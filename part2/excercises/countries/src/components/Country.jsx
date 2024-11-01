@@ -1,4 +1,7 @@
 const Country = ({ countryObject }) => {
+  console.log('==================================');
+  console.log('countryObject', countryObject);
+  console.log('==================================');
   if (Object.keys(countryObject).length === 0) {
     console.log('no keys');
     console.log(countryObject);
@@ -6,7 +9,9 @@ const Country = ({ countryObject }) => {
     return <></>;
   } else {
     console.log('keys???????????');
-    console.log(countryObject);
+    console.log('==================================');
+    console.log('countryObject', countryObject);
+    console.log('==================================');
 
     return (
       <>
@@ -14,9 +19,7 @@ const Country = ({ countryObject }) => {
         <h3></h3>
         <p>Capital {countryObject.capital[0]}</p>
         <p>Area {countryObject.area}</p>
-        <br />
         <h3>Languges:</h3>
-        <br />
         <ul>
           {Object.entries(countryObject.languages).map(([key, value]) => (
             <li> {value}</li>
