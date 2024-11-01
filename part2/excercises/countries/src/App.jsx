@@ -25,26 +25,23 @@ function App() {
 
   const searchCountry = (event) => {
     event.preventDefault();
-    setResults([]);
-    const searchedCountry = countriesDatabase.find(
-      (country) => country.name.common === inputCountry
-    );
 
-    const searchedCountry2 = countriesDatabase.filter((country) =>
+    const searchedCountries = countriesDatabase.filter((country) =>
       country.name.common.toLowerCase().includes(inputCountry.toLowerCase())
     );
     console.log('==================================');
-    console.log('searchedCountry2', searchedCountry2);
+    console.log('searchedCountries', searchedCountries);
     console.log('==================================');
-    console.log('==================================');
-    console.log('searchedCountry', searchedCountry);
-    console.log('==================================');
-    if (searchedCountry2.length === 1) {
-      setCountry(searchedCountry2[0]);
-    } else if (searchedCountry2.length <= 10) {
-      setResults(searchedCountry2);
+
+    if (searchedCountries.length === 1) {
+      setResults([]);
+      setCountry(searchedCountries[0]);
+    } else if (searchedCountries.length <= 10) {
+      setResults(searchedCountries);
+      setCountry([]);
       console.log('<=10');
     } else {
+      setResults([]);
       console.log('> 10');
     }
   };
