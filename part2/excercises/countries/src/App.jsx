@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [country, setCountry] = useState(null);
+  const [inputCountry, setInputCountry] = useState('');
+  const [countriesDatabase, setCountriesDatabase] = useState([]);
+  useEffect(() => {
+    axios
+      .get('https://studies.cs.helsinki.fi/restcountries/api/all')
+      .then((response) => response.data)
+      .then((data) => {
+        setCountriesDatabase(data);
+      });
+
+    countriesDatabase.forEach((element) => {
+      // console.log('==================================');
+      // console.log('element.name', element.name.common);
+      // console.log('==================================');
+    });
+  }, []);
+
+  const searchCountry = (event) => {
+    event.preventDefault();
+    const searchedCountry = countriesDatabase.find(
+      (country) => country.name.common === inputCountry
+    );
+
+    setCountry(searchedCountry);
+    console.log('==================================');
+    console.log('searchedCountry', searchedCountry);
+    console.log('==================================');
+  };
+
+  const handleInputChange = (event) => {
+    setInputCountry(event.target.value);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <form onSubmit={searchCountry}>
+        <input type="text" value={inputCountry} onChange={handleInputChange} />
+        <button type="submit">Search</button>
+      </form>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
