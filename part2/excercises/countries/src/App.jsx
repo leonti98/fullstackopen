@@ -36,9 +36,7 @@ function App() {
   const handleInputChange = (event) => {
     setInputCountry(event.target.value);
   };
-  console.log('==================================');
-  console.log('country', country);
-  console.log('==================================');
+
   if (Object.keys(country).length === 0) {
     console.log('no country');
   } else {

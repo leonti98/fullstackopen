@@ -11,6 +11,18 @@ const Country = ({ countryObject }) => {
     return (
       <>
         <h2>{countryObject.name.common}</h2>
+        <h3></h3>
+        <p>Capital {countryObject.capital[0]}</p>
+        <p>Area {countryObject.area}</p>
+        <br />
+        <h3>Languges:</h3>
+        <br />
+        <ul>
+          {Object.entries(countryObject.languages).map(([key, value]) => (
+            <li> {value}</li>
+          ))}
+        </ul>
+        <img src={countryObject.flags.png} alt="flag" />
       </>
     );
   }
