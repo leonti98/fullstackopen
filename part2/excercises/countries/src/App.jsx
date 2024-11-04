@@ -2,22 +2,10 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Countries from './components/Country';
 
-const ListedCountry = ({ country, handleShow }) => {
-  // console.log(country);
-  return (
-    <li>
-      {country.name.common}
-      <button onClick={() => handleShow(country)}>show</button>
-    </li>
-  );
-};
-
 function App() {
   const [matchingCountries, setMatchingCountries] = useState([]);
-  const [country, setCountry] = useState({});
   const [inputCountry, setInputCountry] = useState('');
   const [countriesDatabase, setCountriesDatabase] = useState([]);
-  const [results, setResults] = useState([]);
 
   useEffect(() => {
     axios
@@ -46,13 +34,9 @@ function App() {
           setMatchingCountries(matchedCountries);
         }
       }
+    } else {
+      setMatchingCountries(matchedCountries);
     }
-  };
-
-  const handleShowButton = (country) => {
-    console.log(country);
-    setCountry(country);
-    setResults([]);
   };
 
   const handleInputChange = (event) => {
@@ -62,19 +46,9 @@ function App() {
   return (
     <div>
       <form onSubmit={searchCountry}>
-        <input type="text" value={inputCountry} onChange={handleInputChange} />
+        <input type="text" onChange={handleInputChange} />
         <button type="submit">Search</button>
       </form>
-      <ul>
-        {results.map((country) => (
-          <ListedCountry
-            country={country}
-            handleShow={() => handleShowButton(country)}
-            key={country.cca2}
-          />
-        ))}
-      </ul>
-      {/* <Country countryObject={country} /> */}
       <Countries matchingCountries={matchingCountries} />
     </div>
   );
