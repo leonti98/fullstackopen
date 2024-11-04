@@ -15,7 +15,6 @@ const CountryInfo = ({ country, weather }) => {
     return null;
   }
   const imgLink = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
-  console.log(imgLink);
 
   return (
     <>
@@ -75,7 +74,7 @@ const Countries = ({ matchingCountries }) => {
     return (
       <div>
         <ul>
-          {matchingCountries.length !== 1 &&
+          {!selectedCountry &&
             matchingCountries.map((country) => (
               <ListedCountry
                 country={country}

@@ -27,7 +27,6 @@ function App() {
       for (let i = 0; i < matchedCountries.length; i++) {
         const countryName = matchedCountries[i].name.common.toLowerCase();
         if (searchInput === countryName) {
-          console.log(searchInput);
           setMatchingCountries([matchedCountries[i]]);
           break;
         } else if (matchedCountries.length === i + 1) {
