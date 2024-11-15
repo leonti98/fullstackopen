@@ -47,24 +47,30 @@ app.delete("/api/notes/:id", (request, response) => {
   response.status(204).end();
 });
 
-app.post("/api/notes", (request, response) => {
-  const maxID =
+const generateID = () => {
+  const maxId =
     notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
-  console.log("==================================");
-  console.log(
-    "Math.max(...notes.map((n) => Number(n.id)))",
-    Math.max(...notes.map((n) => Number(n.id)))
-  );
-  console.log("==================================");
-  console.log(notes.map((n) => Number(n.id)));
 
-  console.log("==================================");
+  return String(maxId + 1);
+};
 
-  const note = request.body;
-  note.id = String(maxID + 1);
+app.post("/api/notes", (request, response) => {
+  const body = request.body;
+
+  if (!body.content) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const note = {
+    content: body.content,
+    important: Boolean(body.important) || false,
+    id: generateID(),
+  };
+  console.log(note);
 
   notes = notes.concat(note);
-
   response.json(note);
 });
 
