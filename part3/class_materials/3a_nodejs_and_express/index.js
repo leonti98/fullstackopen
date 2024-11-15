@@ -48,8 +48,23 @@ app.delete("/api/notes/:id", (request, response) => {
 });
 
 app.post("/api/notes", (request, response) => {
+  const maxID =
+    notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
+  console.log("==================================");
+  console.log(
+    "Math.max(...notes.map((n) => Number(n.id)))",
+    Math.max(...notes.map((n) => Number(n.id)))
+  );
+  console.log("==================================");
+  console.log(notes.map((n) => Number(n.id)));
+
+  console.log("==================================");
+
   const note = request.body;
-  console.log(note);
+  note.id = String(maxID + 1);
+
+  notes = notes.concat(note);
+
   response.json(note);
 });
 
