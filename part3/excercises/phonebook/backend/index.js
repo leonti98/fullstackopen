@@ -38,6 +38,10 @@ const morganLogger = morgan(
 app.use(express.json());
 app.use(morganLogger);
 
+const cors = require("cors");
+
+app.use(cors());
+
 const generateId = () => {
   const id = Math.floor(Math.random() * 1000000);
   return id;
