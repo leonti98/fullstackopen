@@ -1,7 +1,7 @@
-POST http://localhost:3001/api/notes
+POST https://render-test-n4cp.onrender.com/api/notes
 Content-Type: application/json
 
 {
-    "content": "rest client is a handy tool",
+    "content": "test",
     "important": false
 }
