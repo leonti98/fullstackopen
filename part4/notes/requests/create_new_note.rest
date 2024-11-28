@@ -1,0 +1,7 @@
+POST https://render-test-n4cp.onrender.com/api/notes
+Content-Type: application/json
+
+{
+    "content": "test",
+    "important": false
+}
