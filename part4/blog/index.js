@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+const config = require('./utils/config');
+const { error, info } = require('./utils/logger');
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -12,7 +14,9 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema);
 
-const mongoUrl = 'mongodb://localhost/bloglist';
+const mongoUrl = config.MONGODB_URI;
+info('connecting to database');
+
 mongoose.connect(mongoUrl);
 
 app.use(cors());
@@ -26,13 +30,12 @@ app.get('/api/blogs', (request, response) => {
 
 app.post('/api/blogs', (request, response) => {
   const blog = new Blog(request.body);
-
+  info('blog', blog);
   blog.save().then((result) => {
     response.status(201).json(result);
   });
 });
 
-const PORT = 3003;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`);
 });
