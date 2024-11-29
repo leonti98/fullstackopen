@@ -13,10 +13,11 @@ mongoose.connect(mongoUrl).catch((error) => {
   error('error connecting to MongoDB:', error.message);
 });
 
-app.use('/api/blogs', blogRouter);
-
 app.use(cors());
 app.use(express.json());
+app.use(middleware.requestLogger);
+
+app.use('/api/blogs', blogRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
