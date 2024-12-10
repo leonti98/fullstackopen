@@ -3,7 +3,7 @@ const dummy = (blogs) => {
 };
 
 const totalLikes = (blogs) => {
-  const reducer = (sum, item) => {
+  reducer = (sum, item) => {
     return sum + item.likes;
   };
 
@@ -18,17 +18,20 @@ const favoriteBlog = (blogs) => {
 };
 
 const mostBlogs = (blogs) => {
-  // find the author with the most blogs
-  blogs.reduce((current, previous) => {
-    if (current.author === previous.author) {
-      current.blogs += 1;
+  const authors = blogs.map((blog) => blog.author);
+  const authorCount = authors.reduce((allAuthors, author) => {
+    if (author in allAuthors) {
+      allAuthors[author]++;
+    } else {
+      allAuthors[author] = 1;
     }
-    return current;
-  });
-  // return the author with the most blogs
-  return blogs.reduce((current, previous) =>
-    current.blogs > previous.blogs ? current : previous
+    return allAuthors;
+  }, {});
+
+  const mostBlogs = Object.keys(authorCount).reduce((a, b) =>
+    authorCount[a] > authorCount[b] ? a : b
   );
+  return { author: mostBlogs, blogs: authorCount[mostBlogs] };
 };
 
 module.exports = {
